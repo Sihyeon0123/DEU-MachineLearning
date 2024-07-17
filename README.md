@@ -60,7 +60,17 @@
   - 중심점: 각 군집의 중심을 나타내는 점
   - 거리 측정: 데이터 포인트와 중심점 사이의 거리 계산
   - 군집 할당: 데이터 포인트를 가장 가까운 중심점에 할당
-
+- **예제코드**:
+    ```python
+    # 군집의 수를 2개로 하는 군집화 객체
+    kmeans = KMeans(n_clusters=2, n_init=10)
+    # 2, 3열을 이용한
+    kmeans.fit(data_std)
+    # 군집 라벨
+    print(kmeans.labels_)
+    # 군집별 군집 중심
+    print(kmeans.cluster_centers_)
+    ```
 ---
 
 ### 4장: Apriori 알고리즘
@@ -72,7 +82,22 @@
   - 지지도: 특정 항목 집합이 전체 데이터에서 나타나는 빈도
   - 신뢰도: 규칙의 신뢰성을 나타내는 지표
   - 향상도: 항목 간의 연관성을 나타내는 지표
+- **예제코드**:
+    ```python
+    # 데이터 프레임으로 변환
+    df = pd.DataFrame(tran_ar, columns=te.columns_)
+    print(df)
 
+    # 각 상품별 거래 빈도
+    freq = df.sum().to_frame('Frequency')
+    # 빈도 역순으로 정렬
+    freq_sort = freq.sort_values('Frequency', ascending=False)
+    print(freq_sort)
+
+    # 지지도
+    freq_sort['Support'] = freq_sort['Frequency'] / len(freq_sort)
+    print(freq_sort)
+    ```
 ---
 
 ### 5장: K-최근접 이웃 알고리즘
@@ -84,7 +109,13 @@
   - 거리 측정: 데이터 포인트 간의 유사성 계산
   - K 값: 이웃의 개수를 나타내는 파라미터
   - 다수결 투표: 가장 많은 이웃이 속한 클래스로 분류
-
+- **예제코드**:
+    ```python
+    # 모형화
+    knn = KNeighborsClassifier(n_neighbors=3, metric='euclidean')
+    # 학습
+    knn.fit(x_train_std, y_train)
+    ```
 ---
 
 ### 6장: 서포트 벡터 머신
@@ -108,7 +139,14 @@
   - 정보 이득: 트리 분할 시 얻는 정보의 양
   - 가지치기: 트리의 복잡도를 줄이는 과정
   - 불순도: 데이터의 혼합 정도를 나타내는 지표
+- **예제코드**:
+    ```python
+    # C5.0 모형 설정
+    clf = tree.DecisionTreeClassifier(criterion="entropy")
 
+    # 학습
+    clf = clf.fit(X_train, Y_train)
+    ```
 ---
 
 ### 8장: 경사하강법
@@ -120,7 +158,14 @@
   - 학습률: 파라미터 업데이트 시의 스텝 크기
   - 비용 함수: 모델의 예측 오차를 나타내는 함수
   - 기울기: 비용 함수의 변화율을 나타내는 벡터
+- **예제코드**:
+    ```python
+    # 확률적 경사하강법 객체 생성
+    model = SGDRegressor(verbose=1)
 
+    # 모형 학습
+    model.fit(X_train, Y_train)
+    ```
 ---
 
 ### 9장: 인공신경망과 퍼셉트론
@@ -132,7 +177,10 @@
   - 뉴런: 신경망의 기본 단위
   - 활성화 함수: 뉴런의 출력을 결정하는 함수
   - 퍼셉트론: 단층 신경망 모델
-
+- **예제코드**:
+    ```python
+    
+    ```
 ---
 
 ### 10장: 다층 퍼셉트론과 딥러닝
@@ -144,7 +192,13 @@
   - 은닉층: 입력과 출력을 연결하는 중간 계층
   - 역전파: 오류를 출력에서 입력 방향으로 전파하여 가중치 업데이트
   - 활성화 함수: 비선형성을 도입하여 복잡한 패턴 학습
-
+- **예제코드**:
+    ```python
+    # 모형화
+    model = MLPClassifier(hidden_layer_sizes=(2), activation='logistic', solver='lbfgs', max_iter=100)
+    # 학습
+    model.fit(X, y)
+    ```
 ---
 
 ### 11장: 딥러닝: 회귀분석
@@ -156,7 +210,25 @@
   - 손실 함수: 예측값과 실제값 간의 차이를 나타내는 함수
   - 최적화 알고리즘: 모델 파라미터를 조정하는 방법
   - 모델 평가: 예측 성능을 평가하는 지표
+- **예제코드**:
+    ```python
+    # 모형 구조
+    model = Sequential()
+    model.add(Dense(60, activation='relu', input_shape=(12,)))
+    model.add(Dense(60, activation='relu'))
+    model.add(Dense(30, activation='relu'))
+    model.add(Dense(1))
 
+    # 모형 구성
+    model.compile(optimizer='adam',
+                 loss='mse',
+                 metrics=['mse'])
+
+    # 학습
+    results = model.fit(X_train_norm, y_train_norm,
+                       validation_data=(X_test_norm, y_train_norm),
+                       epochs=200, batch_size=32)
+    ```
 ---
 
 ### 12장: 딥러닝: 분류분석
@@ -168,7 +240,25 @@
   - 분류 손실 함수: 분류 문제에서 사용하는 손실 함수
   - 최적화 알고리즘: 모델 파라미터를 조정하는 방법
   - 모델 평가: 분류 성능을 평가하는 지표
+- **예제코드**:
+    ```python
+    # 모형 구조
+    model = Sequential()
+    model.add(Flatten(input_shape=(28, 28)))
+    model.add(Dense(512, activation='relu'))
+    model.add(Dense(10, activation='softmax'))
 
+    # 모형 구성
+    model.compile(loss='categorical_crossentropy',
+             optimizer='adam',
+             metrics=['accuracy'])
+
+        
+    # 학습
+    results = model.fit(X_train_norm, y_train_class,
+                       validation_data=(X_test_norm, y_test_class),
+                       epochs=100, batch_size=128)
+    ```
 ---
 
 ### 13장: 합성곱 신경망의 이미지 분류
@@ -180,7 +270,33 @@
   - 합성곱 층: 이미지의 특징을 추출하는 층
   - 풀링 층: 이미지 크기를 축소하여 계산량을 줄이는 층
   - 이미지 전처리: 이미지 데이터를 신경망에 입력하기 전에 처리하는 방법
+- **예제코드**:
+    ```python
+    # 모형 구조
+    model = Sequential()
+    model.add(Conv2D(32,kernel_size=(3,3),
+                    activation='relu',
+                    input_shape=(28, 28, 1)))
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Conv2D(64, (3, 3), activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Flatten())
+    model.add(Dense(128, activation='relu'))
+    model.add(Dropout(0, 5))
+    model.add(Dense(128, activation='relu'))
+    model.add(Dropout(0, 5))
+    model.add(Dense(10, activation='softmax'))
 
+    # 모형 구성
+    model.compile(loss='categorical_crossentropy',
+                 optimizer='adam',
+                 metrics=['accuracy'])
+
+    # 학습
+    results = model.fit(X_train_norm, y_train_class,
+                   validation_data=(X_test_norm, y_test_class),
+                   epochs=50, batch_size=128)
+    ```
 ---
 
 ## 참고자료
